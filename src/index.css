@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-app-bg: #F8FAFC;
+  --color-app-text: #0F172A;
+  --color-accent: #4F46E5;
+  --color-whatsapp: #22C55E;
+  --color-error: #EF4444;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-app-bg);
+  color: var(--color-app-text);
+  font-family: 'Inter', 'Geist', system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-slate-200;
+  }
+}

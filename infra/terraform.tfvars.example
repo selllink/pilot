@@ -1,0 +1,11 @@
+# Copy to terraform.tfvars and set values. Do not commit terraform.tfvars.
+#
+# Si YA TIENES un proyecto (creado en el Dashboard), deja organization_id y db_password vacíos
+# para que Terraform solo ejecute el script del bucket y no intente crear otro proyecto.
+#
+# organization_id = ""   # vacío = no crear proyecto
+# db_password     = ""   # vacío = no crear proyecto
+#
+# Para crear el bucket en tu proyecto existente (obligatorio si usas Terraform para el bucket):
+# supabase_url              = "https://tu-proyecto.supabase.co"
+# supabase_service_role_key = "eyJ..."   # Service role (secret), NO la anon/publishable
