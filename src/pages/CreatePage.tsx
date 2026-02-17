@@ -124,26 +124,7 @@ export function CreatePage() {
           value={whatsappNumber}
           onChange={setWhatsappNumber}
         />
-        {isCreatorGoogle ? (
-          <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
-            {creatorAvatarUrl && (
-              <img
-                src={creatorAvatarUrl}
-                alt=""
-                className="h-10 w-10 rounded-full object-cover"
-              />
-            )}
-            <div className="flex-1">
-              <p className="text-sm font-medium text-slate-700">
-                Publicar como {creatorName || creatorEmail}
-              </p>
-              <p className="text-xs text-slate-500">{creatorEmail}</p>
-            </div>
-            <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
-              Cuenta verificada con Google
-            </span>
-          </div>
-        ) : (
+        {!isCreatorGoogle && (
           <Input
             label="Your email"
             type="email"
