@@ -9,8 +9,18 @@ export function Layout() {
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-10 border-b border-slate-200 bg-slate-50/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-lg items-center justify-between px-4">
-          <Link to="/" className="font-medium text-slate-900">
-            LinkVenta Express
+          <Link to="/" className="flex items-center gap-2 font-medium text-slate-900">
+            <picture>
+              <source srcSet="/logo-64.webp" type="image/webp" />
+              <img
+                src="/logo-64.png"
+                alt=""
+                className="h-8 w-8 object-contain"
+                width={32}
+                height={32}
+              />
+            </picture>
+            <span>LinkVenta Express</span>
           </Link>
           {!loading && (
             user ? (
