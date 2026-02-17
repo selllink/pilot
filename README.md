@@ -29,6 +29,45 @@ Plataforma para crear fichas de venta con link corto y expiración. Stack: Vite 
    ```
    La salida queda en `dist/`. Para probar el build localmente: `npm run preview`.
 
+## Desplegar en Vercel
+
+### Opción 1: Vercel CLI
+
+1. **Instalar la CLI** (una vez):
+   ```bash
+   npm i -g vercel
+   ```
+
+2. **Desde la raíz del proyecto**:
+   ```bash
+   vercel
+   ```
+   La primera vez te pedirá login (si no estás logueado) y asociar el proyecto. Responde a las preguntas; Vite se detecta solo.
+
+3. **Variables de entorno**  
+   Configúralas en el [Dashboard de Vercel](https://vercel.com/dashboard) → tu proyecto → Settings → Environment Variables:
+   - `VITE_SUPABASE_URL` = tu URL de Supabase
+   - `VITE_SUPABASE_ANON_KEY` = tu anon key
+
+   O por CLI (en la raíz del repo):
+   ```bash
+   vercel env add VITE_SUPABASE_URL
+   vercel env add VITE_SUPABASE_ANON_KEY
+   ```
+   (te pedirá el valor para cada una.)
+
+4. **Deploy a producción**:
+   ```bash
+   vercel --prod
+   ```
+
+### Opción 2: Conectar el repo en vercel.com
+
+1. Entra a [vercel.com](https://vercel.com) e importa el repo de Git (GitHub/GitLab/Bitbucket).
+2. Vercel detecta Vite; deja **Build Command**: `npm run build` y **Output Directory**: `dist`.
+3. Añade las variables de entorno `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`.
+4. Deploy. Cada push a la rama principal puede configurarse para que haga deploy automático.
+
 ## Documentación
 
 - [documents/requirements.md](documents/requirements.md) – Requisitos
