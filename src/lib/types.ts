@@ -16,4 +16,8 @@ export interface CreateListingPayload {
   whatsapp_number: string
   creator_email: string
   image_paths?: string[]
+  /** Set when creator is signed in with Google */
+  creator_name?: string | null
+  creator_avatar_url?: string | null
+  creator_verified_google?: boolean
 }

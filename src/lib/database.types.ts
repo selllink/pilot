@@ -19,6 +19,9 @@ export interface Database {
           description: string | null
           whatsapp_number: string
           creator_email: string
+          creator_name: string | null
+          creator_avatar_url: string | null
+          creator_verified_google: boolean
           expires_at: string
           created_at: string
           updated_at: string
@@ -33,6 +36,9 @@ export interface Database {
           description?: string | null
           whatsapp_number: string
           creator_email: string
+          creator_name?: string | null
+          creator_avatar_url?: string | null
+          creator_verified_google?: boolean
           expires_at?: string
           created_at?: string
           updated_at?: string
@@ -47,6 +53,9 @@ export interface Database {
           description?: string | null
           whatsapp_number?: string
           creator_email?: string
+          creator_name?: string | null
+          creator_avatar_url?: string | null
+          creator_verified_google?: boolean
           expires_at?: string
           created_at?: string
           updated_at?: string

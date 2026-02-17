@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { ImageUploader } from '@/components/product/ImageUploader'
@@ -8,8 +9,13 @@ import { WhatsAppNumberInput, normalizeWhatsAppNumber, validateWhatsAppNumber } 
 import { createListing } from '@/lib/listings'
 import type { CreateListingPayload } from '@/lib/types'
 
+function isGoogleUser(user: { app_metadata?: { provider?: string }; identities?: { provider: string }[] }): boolean {
+  return user.app_metadata?.provider === 'google' || (user.identities?.some((i) => i.provider === 'google') ?? false)
+}
+
 export function CreatePage() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [title, setTitle] = useState('')
   const [price, setPrice] = useState('')
   const [currencyCode, setCurrencyCode] = useState('MXN')
@@ -19,6 +25,14 @@ export function CreatePage() {
   const [files, setFiles] = useState<File[]>([])
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const isCreatorGoogle = !!user && isGoogleUser(user)
+  const creatorName = user?.user_metadata?.full_name ?? user?.user_metadata?.name ?? ''
+  const creatorAvatarUrl = user?.user_metadata?.picture ?? user?.user_metadata?.avatar_url ?? null
+
+  useEffect(() => {
+    if (user?.email) setCreatorEmail(user.email)
+  }, [user?.email])
 
   const previewUrls = useMemo(
     () => files.map((f) => URL.createObjectURL(f)),
@@ -66,6 +80,11 @@ export function CreatePage() {
         description: description.trim(),
         whatsapp_number: normalizedWhatsApp,
         creator_email: creatorEmail.trim(),
+        ...(isCreatorGoogle && {
+          creator_name: creatorName || null,
+          creator_avatar_url: creatorAvatarUrl || null,
+          creator_verified_google: true,
+        }),
       }
       const listing = await createListing(payload, files)
       if (listing) {
@@ -105,14 +124,35 @@ export function CreatePage() {
           value={whatsappNumber}
           onChange={setWhatsappNumber}
         />
-        <Input
-          label="Your email"
-          type="email"
-          placeholder="you@example.com"
-          value={creatorEmail}
-          onChange={(e) => setCreatorEmail(e.target.value)}
-          required
-        />
+        {isCreatorGoogle ? (
+          <div className="flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3">
+            {creatorAvatarUrl && (
+              <img
+                src={creatorAvatarUrl}
+                alt=""
+                className="h-10 w-10 rounded-full object-cover"
+              />
+            )}
+            <div className="flex-1">
+              <p className="text-sm font-medium text-slate-700">
+                Publicar como {creatorName || creatorEmail}
+              </p>
+              <p className="text-xs text-slate-500">{creatorEmail}</p>
+            </div>
+            <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
+              Cuenta verificada con Google
+            </span>
+          </div>
+        ) : (
+          <Input
+            label="Your email"
+            type="email"
+            placeholder="you@example.com"
+            value={creatorEmail}
+            onChange={(e) => setCreatorEmail(e.target.value)}
+            required
+          />
+        )}
         <ImageUploader
           files={files}
           previewUrls={previewUrls}

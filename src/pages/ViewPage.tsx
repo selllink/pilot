@@ -102,6 +102,33 @@ export function ViewPage() {
         </div>
       </div>
 
+      {listing.creator_verified_google && (
+        <div className="mt-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/80 p-3">
+          {listing.creator_avatar_url ? (
+            <img
+              src={listing.creator_avatar_url}
+              alt=""
+              className="h-12 w-12 rounded-full object-cover"
+            />
+          ) : (
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-200 text-lg font-medium text-slate-500">
+              {(listing.creator_name || 'V').charAt(0).toUpperCase()}
+            </div>
+          )}
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-medium text-slate-900">
+              {listing.creator_name || 'Vendedor'}
+            </p>
+            <span className="inline-flex items-center gap-1.5 rounded bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
+              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+              </svg>
+              Cuenta verificada con Google
+            </span>
+          </div>
+        </div>
+      )}
+
       <div className="fixed bottom-0 left-0 right-0 border-t border-slate-200 bg-slate-50 p-4">
         <Button
           variant="whatsapp"

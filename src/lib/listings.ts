@@ -47,6 +47,9 @@ export async function createListing(
       description: payload.description || null,
       whatsapp_number: payload.whatsapp_number,
       creator_email: payload.creator_email,
+      creator_name: payload.creator_name ?? null,
+      creator_avatar_url: payload.creator_avatar_url ?? null,
+      creator_verified_google: payload.creator_verified_google ?? false,
       image_paths: imagePaths.length ? imagePaths : null,
     } as Record<string, unknown>)
     .select('*')
@@ -156,6 +159,9 @@ export async function duplicateListing(listing: Listing): Promise<Listing | null
       description: listing.description,
       whatsapp_number: listing.whatsapp_number,
       creator_email: listing.creator_email,
+      creator_name: listing.creator_name,
+      creator_avatar_url: listing.creator_avatar_url,
+      creator_verified_google: listing.creator_verified_google,
       image_paths: listing.image_paths,
     } as Record<string, unknown>)
     .select('*')
