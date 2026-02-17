@@ -16,7 +16,7 @@ export function EditPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const [title, setTitle] = useState('')
   const [price, setPrice] = useState('')
   const [currencyCode, setCurrencyCode] = useState('MXN')
@@ -40,6 +40,12 @@ export function EditPage() {
       setWhatsappNumber(listing.whatsapp_number)
     }
   }, [listing])
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/dashboard')
+    }
+  }, [authLoading, user, navigate])
 
   const updateMutation = useMutation({
     mutationFn: (updates: Parameters<typeof updateListing>[1]) =>
@@ -85,8 +91,7 @@ export function EditPage() {
     }
   }
 
-  if (!user) {
-    navigate('/dashboard')
+  if (!authLoading && !user) {
     return null
   }
 
