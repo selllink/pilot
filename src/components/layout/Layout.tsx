@@ -1,9 +1,12 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { UserMenu } from './UserMenu'
 
 export function Layout() {
   const { user, loading, signOut } = useAuth()
+  const location = useLocation()
+  const isDashboard = location.pathname === '/dashboard'
+  const hideHeaderAvatar = isDashboard && user
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A]">
@@ -22,7 +25,7 @@ export function Layout() {
             </picture>
             <span>LinkVenta Express</span>
           </Link>
-          {!loading && (
+          {!loading && !hideHeaderAvatar && (
             user ? (
               <UserMenu user={user} onSignOut={signOut} />
             ) : (
