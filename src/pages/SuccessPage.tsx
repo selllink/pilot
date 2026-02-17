@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { SuccessModal } from '@/components/modals/SuccessModal'
 
-function getListingUrl(slug: string): string {
+/** URL para compartir (WhatsApp, copiar): usa /s/ para que el preview muestre título e imagen. */
+function getShareUrl(slug: string): string {
   const base = typeof window !== 'undefined' ? window.location.origin : ''
-  return `${base}/v/${slug}`
+  return `${base}/s/${slug}`
 }
 
 export function SuccessPage() {
@@ -18,7 +19,7 @@ export function SuccessPage() {
 
   useEffect(() => {
     if (slug) {
-      setListingUrl(getListingUrl(slug))
+      setListingUrl(getShareUrl(slug))
     }
   }, [slug])
 

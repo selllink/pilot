@@ -29,7 +29,7 @@ function ListingCard({
   const navigate = useNavigate()
   const imageUrls = getListingImageUrls(listing)
   const isExpired = new Date(listing.expires_at) <= new Date()
-  const publicUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/v/${listing.short_slug}`
+  const publicUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/s/${listing.short_slug}`
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">

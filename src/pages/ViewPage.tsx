@@ -30,8 +30,9 @@ export function ViewPage() {
   const handleWhatsAppClick = () => {
     if (!listing) return
     recordListingEvent(listing.id, 'whatsapp_click').catch(() => {})
+    const shareUrl = `${window.location.origin}/s/${listing.short_slug}`
     const text = encodeURIComponent(
-      `${DEFAULT_MESSAGE}: ${listing.title} - ${window.location.href}`
+      `${DEFAULT_MESSAGE}: ${listing.title} - ${shareUrl}`
     )
     const url = `https://wa.me/${listing.whatsapp_number}?text=${text}`
     window.open(url, '_blank')
@@ -77,9 +78,9 @@ export function ViewPage() {
           onClick={() => {
             navigator.share?.({
               title: listing.title,
-              url: window.location.href,
+              url: `${window.location.origin}/s/${listing.short_slug}`,
             }).catch(() => {
-              navigator.clipboard.writeText(window.location.href)
+              navigator.clipboard.writeText(`${window.location.origin}/s/${listing.short_slug}`)
             })
           }}
         >
