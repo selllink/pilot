@@ -99,7 +99,7 @@ export function EditPage() {
     return <div className="text-slate-600">Loading…</div>
   }
 
-  if (listing.creator_email !== user.email) {
+  if (!user || listing.creator_email !== user.email) {
     return (
       <div className="rounded-lg bg-red-50 p-4 text-red-800">
         You can only edit your own listings.
