@@ -7,12 +7,12 @@ interface BadgeProps {
 
 const statusConfig: Record<BadgeStatus, { label: string; className: string }> = {
   active: {
-    label: 'Active',
-    className: 'bg-green-100 text-green-800',
+    label: 'Activo',
+    className: 'bg-green-100 text-green-600 font-black text-[10px] uppercase',
   },
   expired: {
-    label: 'Expired',
-    className: 'bg-red-100 text-red-800',
+    label: 'Expirado',
+    className: 'bg-red-100 text-red-600',
   },
 }
 
