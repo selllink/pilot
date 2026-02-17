@@ -85,7 +85,7 @@ export function ImageUploader({
           <svg className="h-8 w-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
             <path strokeWidth={2} strokeLinecap="round" d="M12 4v16m8-8H4" />
           </svg>
-          <span className="mt-2 text-xs text-slate-400">Agregar fotos</span>
+          <span className="mt-2 text-xs text-slate-400">Toca para subir fotos</span>
         </label>
         {mainUrl && (
           <div className="relative col-span-2 h-40 overflow-hidden rounded-2xl bg-slate-100">

@@ -42,7 +42,7 @@ export function UserMenu({ user, onSignOut }: UserMenuProps) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-slate-200 bg-white shadow-sm transition hover:border-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+        className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-1 ring-slate-200 bg-white transition hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
         aria-expanded={open}
         aria-haspopup="true"
         aria-label="Menú de usuario"

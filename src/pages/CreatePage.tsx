@@ -107,6 +107,7 @@ export function CreatePage() {
 
   return (
     <div className="mx-auto max-w-md space-y-6">
+      <h1 className="text-xl font-bold text-[#0F172A]">Create Listing</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <ImageUploader
           files={files}
@@ -114,19 +115,19 @@ export function CreatePage() {
           onFilesChange={setFiles}
         />
         <div className="grid grid-cols-2 gap-4">
-          <Input
-            card
-            label="Título"
-            placeholder="¿Qué vendes?"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
           <PriceInput
             price={price}
             currencyCode={currencyCode}
             onPriceChange={setPrice}
             onCurrencyChange={setCurrencyCode}
+          />
+          <Input
+            card
+            label="Title"
+            placeholder="Ej. Bicicleta de montaña"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
           />
         </div>
         <Input
@@ -161,10 +162,18 @@ export function CreatePage() {
             </p>
           </div>
         )}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[10px] uppercase tracking-tighter text-slate-400">
+            Usa el icono para validar tu link
+          </span>
+          <span className="rounded-full bg-emerald-500 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wide text-white">
+            Protected by SSO
+          </span>
+        </div>
         {error && <p className="text-[10px] text-red-500">{error}</p>}
         <div>
           <Button type="submit" variant="magic" disabled={submitting}>
-            {submitting ? 'Generando…' : 'Generar Link Mágico ✨'}
+            {submitting ? 'Generando…' : 'Generar mi link mágico ✨'}
           </Button>
           <p className="mt-4 text-center text-[10px] uppercase tracking-tighter text-slate-400">
             El link será válido por <span className="font-bold text-blue-500">30 días</span>.

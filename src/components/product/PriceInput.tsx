@@ -23,7 +23,7 @@ export function PriceInput({
       className={`rounded-[2rem] border border-slate-100 bg-white p-4 shadow-sm transition-all focus-within:ring-2 focus-within:ring-cyan-400 focus-within:border-cyan-200 ${error ? 'border-red-200 focus-within:ring-red-200' : ''}`}
     >
       <label className="text-[10px] uppercase font-bold text-slate-400 tracking-widest block mb-1">
-        Precio
+        Price
       </label>
       <div className="flex items-center gap-2">
         <span className="font-bold text-slate-400">$</span>
