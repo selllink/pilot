@@ -3,6 +3,28 @@ import type { CreateListingPayload, Listing } from './types'
 
 const BUCKET = 'product-images'
 
+export async function uploadImageFiles(files: File[]): Promise<string[]> {
+  const paths: string[] = []
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    const ext = file.name.split('.').pop() ?? 'jpg'
+    const path = `${crypto.randomUUID()}.${ext}`
+    const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
+      contentType: file.type,
+      upsert: false,
+    })
+    if (error) throw new Error(error.message)
+    paths.push(path)
+  }
+  return paths
+}
+
+export async function deleteListingImages(paths: string[]): Promise<void> {
+  if (paths.length === 0) return
+  const { error } = await supabase.storage.from(BUCKET).remove(paths)
+  if (error) throw new Error(error.message)
+}
+
 export function getListingImageUrls(listing: { image_paths: string[] | null }): string[] {
   if (!listing.image_paths?.length) return []
   return listing.image_paths.map((path) => {
@@ -15,20 +37,7 @@ export async function createListing(
   payload: CreateListingPayload,
   imageFiles: File[]
 ): Promise<Listing | null> {
-  const imagePaths: string[] = []
-  if (imageFiles.length > 0) {
-    for (let i = 0; i < imageFiles.length; i++) {
-      const file = imageFiles[i]
-      const ext = file.name.split('.').pop() ?? 'jpg'
-      const path = `${crypto.randomUUID()}.${ext}`
-      const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
-        contentType: file.type,
-        upsert: false,
-      })
-      if (error) throw new Error(error.message)
-      imagePaths.push(path)
-    }
-  }
+  const imagePaths = imageFiles.length > 0 ? await uploadImageFiles(imageFiles) : []
   const { data, error } = await supabase
     .from('listings')
     .insert({
@@ -111,9 +120,13 @@ export async function getListingEventCounts(
   return result
 }
 
+export type UpdateListingPayload = Partial<
+  Omit<CreateListingPayload, 'image_paths'> & { image_paths?: string[] | null }
+>
+
 export async function updateListing(
   id: string,
-  updates: Partial<CreateListingPayload & { image_paths: string[] | null }>
+  updates: UpdateListingPayload
 ): Promise<Listing> {
   const { data, error } = await supabase
     .from('listings')

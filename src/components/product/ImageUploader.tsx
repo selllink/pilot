@@ -9,6 +9,8 @@ interface ImageUploaderProps {
   previewUrls: string[]
   onFilesChange: (files: File[]) => void
   error?: string
+  /** When false, the "Photos (up to N)" label is not rendered. Default true. */
+  showTitle?: boolean
 }
 
 function validateFile(file: File): string | null {
@@ -26,6 +28,7 @@ export function ImageUploader({
   previewUrls,
   onFilesChange,
   error,
+  showTitle = true,
 }: ImageUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -58,7 +61,9 @@ export function ImageUploader({
 
   return (
     <div className="w-full">
-      <p className="mb-2 text-sm font-medium text-slate-700">Photos (up to {MAX_FILES})</p>
+      {showTitle && (
+        <p className="mb-2 text-sm font-medium text-slate-700">Photos (up to {MAX_FILES})</p>
+      )}
       <div className="flex flex-wrap gap-2">
         {previewUrls.map((url, i) => (
           <div key={i} className="relative">
