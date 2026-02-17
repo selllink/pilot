@@ -9,6 +9,14 @@ import { WhatsAppNumberInput, normalizeWhatsAppNumber, validateWhatsAppNumber } 
 import { createListing } from '@/lib/listings'
 import type { CreateListingPayload } from '@/lib/types'
 
+function LockIcon() {
+  return (
+    <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+    </svg>
+  )
+}
+
 function isGoogleUser(user: { app_metadata?: { provider?: string }; identities?: { provider: string }[] }): boolean {
   return user.app_metadata?.provider === 'google' || (user.identities?.some((i) => i.provider === 'google') ?? false)
 }
@@ -98,51 +106,71 @@ export function CreatePage() {
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-xl font-semibold text-slate-900">Create listing</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input
-          label="Title"
-          placeholder="Product title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <PriceInput
-          price={price}
-          currencyCode={currencyCode}
-          onPriceChange={setPrice}
-          onCurrencyChange={setCurrencyCode}
-        />
-        <Input
-          label="Description"
-          placeholder="Describe your product"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <WhatsAppNumberInput
-          value={whatsappNumber}
-          onChange={setWhatsappNumber}
-        />
-        {!isCreatorGoogle && (
-          <Input
-            label="Your email"
-            type="email"
-            placeholder="you@example.com"
-            value={creatorEmail}
-            onChange={(e) => setCreatorEmail(e.target.value)}
-            required
-          />
-        )}
+    <div className="mx-auto max-w-md space-y-6">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <ImageUploader
           files={files}
           previewUrls={previewUrls}
           onFilesChange={setFiles}
         />
-        {error && <p className="text-sm text-red-500">{error}</p>}
-        <Button type="submit" variant="primary" fullWidth disabled={submitting}>
-          {submitting ? 'Creating…' : 'Create listing'}
-        </Button>
+        <div className="grid grid-cols-2 gap-4">
+          <Input
+            card
+            label="Título"
+            placeholder="¿Qué vendes?"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          <PriceInput
+            price={price}
+            currencyCode={currencyCode}
+            onPriceChange={setPrice}
+            onCurrencyChange={setCurrencyCode}
+          />
+        </div>
+        <Input
+          card
+          label="Descripción"
+          placeholder="Describe tu producto"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <div className="rounded-[2rem] border border-slate-100 bg-white p-4 shadow-sm focus-within:ring-2 focus-within:ring-cyan-400 focus-within:border-cyan-200">
+          <WhatsAppNumberInput value={whatsappNumber} onChange={setWhatsappNumber} />
+        </div>
+        {!isCreatorGoogle && (
+          <div className="rounded-[2rem] border border-slate-100 bg-white p-4 shadow-sm focus-within:ring-2 focus-within:ring-cyan-400 focus-within:border-cyan-200">
+            <div className="flex items-center gap-2">
+              <span className="text-slate-400" aria-hidden>
+                <LockIcon />
+              </span>
+              <div className="flex-1 min-w-0">
+                <Input
+                  label="Tu email"
+                  type="email"
+                  placeholder="tú@ejemplo.com"
+                  value={creatorEmail}
+                  onChange={(e) => setCreatorEmail(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+            <p className="mt-1 text-[10px] text-slate-400 uppercase tracking-tighter">
+              Para editar después necesitarás iniciar sesión con Google.
+            </p>
+          </div>
+        )}
+        {error && <p className="text-[10px] text-red-500">{error}</p>}
+        <div>
+          <Button type="submit" variant="magic" disabled={submitting}>
+            {submitting ? 'Generando…' : 'Generar Link Mágico ✨'}
+          </Button>
+          <p className="mt-4 text-center text-[10px] uppercase tracking-tighter text-slate-400">
+            El link será válido por <span className="font-bold text-blue-500">30 días</span>.
+            Requiere <span className="font-bold">SSO</span> para edición posterior.
+          </p>
+        </div>
       </form>
     </div>
   )

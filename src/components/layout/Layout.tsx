@@ -6,8 +6,8 @@ export function Layout() {
   const { user, loading, signOut } = useAuth()
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-slate-50/95 backdrop-blur">
+    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A]">
+      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
         <div className="mx-auto flex h-14 max-w-lg items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2 font-medium text-slate-900">
             <picture>

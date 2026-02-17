@@ -24,7 +24,7 @@ export function WhatsAppNumberInput({ value, onChange, error }: WhatsAppNumberIn
   return (
     <Input
       type="tel"
-      label="WhatsApp number"
+      label="Número WhatsApp"
       placeholder="5215512345678 (52=MX, 1=USA, 54=AR…)"
       value={value}
       onChange={(e) => onChange(e.target.value)}

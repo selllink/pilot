@@ -1,5 +1,3 @@
-import { Input } from '../ui/Input'
-
 const CURRENCIES = [
   { code: 'MXN', label: 'MXN' },
   { code: 'USD', label: 'USD' },
@@ -21,25 +19,27 @@ export function PriceInput({
   error,
 }: PriceInputProps) {
   return (
-    <div className="flex gap-2">
-      <div className="flex-1">
-        <Input
+    <div
+      className={`rounded-[2rem] border border-slate-100 bg-white p-4 shadow-sm transition-all focus-within:ring-2 focus-within:ring-cyan-400 focus-within:border-cyan-200 ${error ? 'border-red-200 focus-within:ring-red-200' : ''}`}
+    >
+      <label className="text-[10px] uppercase font-bold text-slate-400 tracking-widest block mb-1">
+        Precio
+      </label>
+      <div className="flex items-center gap-2">
+        <span className="font-bold text-slate-400">$</span>
+        <input
           type="number"
           min={0}
           step="0.01"
           placeholder="0"
           value={price}
           onChange={(e) => onPriceChange(e.target.value)}
-          error={error}
-          label="Price"
+          className="w-full flex-1 bg-transparent text-sm font-bold text-slate-900 outline-none placeholder:text-slate-300"
         />
-      </div>
-      <div className="w-24">
-        <label className="mb-1 block text-sm font-medium text-slate-700">Currency</label>
         <select
           value={currencyCode}
           onChange={(e) => onCurrencyChange(e.target.value)}
-          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+          className="rounded-lg bg-slate-100 px-2 py-1.5 text-[10px] font-bold text-slate-700 outline-none cursor-pointer border-0"
         >
           {CURRENCIES.map((c) => (
             <option key={c.code} value={c.code}>
@@ -48,6 +48,7 @@ export function PriceInput({
           ))}
         </select>
       </div>
+      {error && <p className="mt-1 text-[10px] text-red-500">{error}</p>}
     </div>
   )
 }
