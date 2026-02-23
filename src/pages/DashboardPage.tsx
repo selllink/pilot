@@ -20,13 +20,6 @@ function daysRemaining(expiresAt: string): number {
   return Math.ceil((end - now) / (24 * 60 * 60 * 1000))
 }
 
-function expirationColor(days: number): string {
-  if (days <= 0) return 'text-red-500'
-  if (days <= 6) return 'text-amber-600'
-  if (days <= 14) return 'text-slate-600'
-  return 'text-emerald-600'
-}
-
 function ClockIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -111,55 +104,57 @@ function ListingCard({
     setMenuOpen(false)
   }
 
-  const progressPercent = isExpired ? 0 : Math.min(100, (days / 30) * 100)
+  const handleCardClick = () => {
+    navigate(`/v/${listing.short_slug}`)
+  }
 
   return (
-    <div className="relative flex items-center gap-4 rounded-[2rem] border border-slate-100 bg-white p-5 shadow-sm transition-all hover:shadow-md">
-      <div className="absolute right-5 top-5 flex flex-col items-end gap-1.5">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={handleCardClick}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCardClick() } }}
+      className="relative flex cursor-pointer items-center gap-4 rounded-[2rem] border border-slate-100 bg-white p-5 shadow-sm transition-all hover:shadow-md"
+    >
+      <div className="absolute right-5 top-5 flex flex-col items-end gap-1.5" onClick={(e) => e.stopPropagation()}>
         <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-slate-500">
           {viewCount} views · {whatsappClickCount} WhatsApp
         </span>
         <Badge status={isExpired ? 'expired' : 'active'} className="shrink-0" />
       </div>
-      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-100">
+      <div className="h-40 w-40 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-100">
         {imageUrls[0] ? (
           <img src={imageUrls[0]} alt="" className="h-full w-full object-cover" />
         ) : null}
       </div>
       <div className="min-w-0 flex-1 pr-24">
         <h3 className="truncate text-lg font-bold text-slate-800">{listing.title}</h3>
-        <p className="mt-0.5 text-xl font-extrabold text-blue-600">
-          $ {Number(listing.price).toLocaleString()}{' '}
-          <span className="text-xs font-medium uppercase text-slate-400">{listing.currency_code}</span>
+        <p className="mt-0.5 text-xl font-extrabold text-cyan-500 whitespace-nowrap">
+          $ {Number(listing.price).toLocaleString()} <span className="uppercase">{listing.currency_code}</span>
         </p>
-        <div className="mt-2">
-          <p className={`flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider ${expirationColor(days)}`}>
-            <ClockIcon className="h-4 w-4 shrink-0" />
-            {isExpired ? 'Expirado' : `Expira en ${days} día${days !== 1 ? 's' : ''}`}
-          </p>
-          <div className="mt-1.5 h-1 w-full overflow-hidden rounded-full bg-slate-100">
-            <div
-              className={`h-full rounded-full transition-all ${
-                days <= 0 ? 'bg-red-400' : days <= 6 ? 'bg-amber-500' : days <= 14 ? 'bg-slate-400' : 'bg-emerald-500'
-              }`}
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-        </div>
+        <p className="mt-2 flex items-center gap-1 text-[10px] text-slate-400">
+          <ClockIcon className="h-3 w-3 shrink-0" />
+          {isExpired ? 'expirado' : `expira en ${days} día${days !== 1 ? 's' : ''}`}
+        </p>
       </div>
-      <div className="flex flex-col gap-2">
-        <button
-          type="button"
-          onClick={handleCopyLink}
-          className="relative rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 p-2.5 text-white shadow-md shadow-cyan-500/20 transition hover:shadow-lg hover:shadow-cyan-500/30"
-          aria-label="Copiar link"
-        >
-          <CopyIcon className="h-5 w-5" />
-        </button>
-        <div className="relative" ref={menuRef}>
+      <div className="flex flex-shrink-0 flex-col items-center justify-end gap-2 self-end">
+        <div className="group relative">
+          <span className="pointer-events-none absolute bottom-full left-1/2 mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-lg bg-slate-800 px-2.5 py-1.5 text-xs font-medium text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100">
+            Copiar link
+          </span>
           <button
             type="button"
-            onClick={() => setMenuOpen((v) => !v)}
+            onClick={(e) => { e.stopPropagation(); handleCopyLink() }}
+            className="rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 p-2.5 text-white shadow-md shadow-cyan-500/20 transition hover:shadow-lg hover:shadow-cyan-500/30"
+            aria-label="Copiar link"
+          >
+            <CopyIcon className="h-5 w-5" />
+          </button>
+        </div>
+        <div className="relative" ref={menuRef} onClick={(e) => e.stopPropagation()}>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setMenuOpen((v) => !v) }}
             className="rounded-xl bg-slate-50 p-2.5 text-slate-500 transition hover:bg-slate-100"
             aria-label="Más opciones"
           >
