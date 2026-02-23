@@ -100,6 +100,24 @@ export async function getMyListings(userEmail: string): Promise<Listing[]> {
   return (data ?? []) as Listing[]
 }
 
+/** Publicaciones del mismo vendedor (activas, sin la actual), para "Más de este vendedor". */
+export async function getListingsByCreator(
+  creatorEmail: string,
+  excludeListingId: string,
+  limit: number = 6
+): Promise<Listing[]> {
+  const { data, error } = await supabase
+    .from('listings')
+    .select('*')
+    .eq('creator_email', creatorEmail)
+    .neq('id', excludeListingId)
+    .gt('expires_at', new Date().toISOString())
+    .order('created_at', { ascending: false })
+    .limit(limit)
+  if (error) throw new Error(error.message)
+  return (data ?? []) as Listing[]
+}
+
 export async function getListingEventCounts(
   listingIds: string[]
 ): Promise<Record<string, { views: number; whatsapp_clicks: number }>> {

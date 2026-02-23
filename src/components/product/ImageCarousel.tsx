@@ -6,6 +6,22 @@ interface ImageCarouselProps {
   className?: string
 }
 
+function ChevronLeft({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+    </svg>
+  )
+}
+
+function ChevronRight({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+    </svg>
+  )
+}
+
 export function ImageCarousel({ imageUrls, alt, className = '' }: ImageCarouselProps) {
   const [index, setIndex] = useState(0)
   const length = imageUrls.length
@@ -19,16 +35,16 @@ export function ImageCarousel({ imageUrls, alt, className = '' }: ImageCarouselP
 
   if (!imageUrls.length) {
     return (
-      <div className={`aspect-square bg-slate-200 rounded-xl flex items-center justify-center ${className}`}>
-        <span className="text-slate-500">No image</span>
+      <div className={`flex aspect-square items-center justify-center rounded-2xl bg-slate-200 ${className}`}>
+        <span className="text-slate-500">Sin imagen</span>
       </div>
     )
   }
 
   return (
-    <div className={`overflow-hidden rounded-xl ${className}`}>
+    <div className={className}>
       <div
-        className="relative aspect-square touch-pan-y select-none"
+        className="relative aspect-square overflow-hidden touch-pan-y select-none"
         style={{ touchAction: 'pan-y' }}
       >
         <img
@@ -40,30 +56,47 @@ export function ImageCarousel({ imageUrls, alt, className = '' }: ImageCarouselP
         />
         {length > 1 && (
           <>
+            {/* Zona izquierda: imagen anterior */}
             <button
               type="button"
-              aria-label="Previous image"
-              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/30 p-2 text-white hover:bg-black/50"
+              aria-label="Imagen anterior"
+              className="absolute inset-y-0 left-0 z-10 w-1/2 cursor-pointer"
               onClick={() => goTo(index - 1)}
             />
+            {/* Zona derecha: siguiente imagen */}
             <button
               type="button"
-              aria-label="Next image"
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/30 p-2 text-white hover:bg-black/50"
+              aria-label="Siguiente imagen"
+              className="absolute inset-y-0 right-0 z-10 w-1/2 cursor-pointer"
               onClick={() => goTo(index + 1)}
             />
+            {/* Iconos visibles */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute left-3 top-1/2 z-0 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-md"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </span>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute right-3 top-1/2 z-0 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-md"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </span>
           </>
         )}
       </div>
       {length > 1 && (
-        <div className="mt-2 flex justify-center gap-1.5">
+        <div className="flex justify-center gap-2 pb-4 pt-4">
           {imageUrls.map((_, i) => (
             <button
               key={i}
               type="button"
-              aria-label={`Go to image ${i + 1}`}
-              className={`h-2 w-2 rounded-full transition ${i === index ? 'bg-indigo-600 scale-125' : 'bg-slate-300'}`}
-              onClick={() => setIndex(i)}
+              aria-label={`Ir a imagen ${i + 1}`}
+              className={`h-2.5 w-2.5 rounded-full transition-all ${
+                i === index ? 'scale-125 bg-cyan-500 ring-2 ring-cyan-500/30' : 'bg-slate-300 hover:bg-slate-400'
+              }`}
+              onClick={(e) => { e.stopPropagation(); setIndex(i) }}
             />
           ))}
         </div>
