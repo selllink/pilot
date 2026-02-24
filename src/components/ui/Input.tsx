@@ -7,7 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   card?: boolean
 }
 
-const labelClass = 'text-[10px] uppercase font-bold text-slate-400 tracking-widest block mb-1'
+const labelClass = 'text-[10px] uppercase font-bold text-slate-500 tracking-widest block mb-1'
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   function Input({ label, error, card = false, className = '', id, ...props }, ref) {
@@ -23,8 +23,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           className={`
-            w-full bg-transparent text-sm font-medium text-slate-900 outline-none
-            placeholder:text-slate-300
+            w-full bg-transparent text-sm font-medium text-[#0F172A] outline-none
+            placeholder:text-slate-400
             disabled:text-slate-500
             ${error ? 'border-red-500' : ''}
             ${className}
@@ -37,7 +37,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     if (card) {
       return (
         <div
-          className={`rounded-[2rem] border border-slate-100 bg-white p-4 shadow-sm transition-all focus-within:ring-2 focus-within:ring-cyan-400 focus-within:border-cyan-200 ${error ? 'border-red-200 focus-within:ring-red-200' : ''}`}
+          className={`rounded-[2rem] border border-slate-200 bg-white p-4 shadow-sm transition-all focus-within:ring-2 focus-within:ring-cyan-400 focus-within:border-cyan-300 ${error ? 'border-red-200 focus-within:ring-red-200' : ''}`}
         >
           {inputEl}
         </div>

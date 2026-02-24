@@ -14,7 +14,7 @@ export function PriceTag({ price, currencyCode, className = '' }: PriceTagProps)
     maximumFractionDigits: 2,
   }).format(price)
   return (
-    <span className={`font-mono text-2xl font-semibold text-slate-900 ${className}`}>
+    <span className={`tabular-nums text-2xl font-bold text-[#0F172A] ${className}`}>
       {formatted}
     </span>
   )

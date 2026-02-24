@@ -19,6 +19,7 @@ import {
   normalizeWhatsAppNumber,
   validateWhatsAppNumber,
 } from '@/components/product/WhatsAppNumberInput'
+import { getLocaleCurrencyCode } from '@/lib/localeCurrency'
 
 export function EditPage() {
   const { id } = useParams<{ id: string }>()
@@ -27,7 +28,7 @@ export function EditPage() {
   const { user, loading: authLoading } = useAuth()
   const [title, setTitle] = useState('')
   const [price, setPrice] = useState('')
-  const [currencyCode, setCurrencyCode] = useState('MXN')
+  const [currencyCode, setCurrencyCode] = useState(() => getLocaleCurrencyCode())
   const [description, setDescription] = useState('')
   const [whatsappNumber, setWhatsappNumber] = useState('')
   const [keptExistingPaths, setKeptExistingPaths] = useState<string[]>([])
@@ -130,27 +131,27 @@ export function EditPage() {
   }
 
   if (isLoading || !listing) {
-    return <div className="text-slate-600">Loading…</div>
+    return <div className="text-sm text-slate-600">Cargando…</div>
   }
 
   if (!user || listing.creator_email !== user.email) {
     return (
-      <div className="rounded-lg bg-red-50 p-4 text-red-800">
-        You can only edit your own listings.
-        <Button variant="ghost" className="mt-2" onClick={() => navigate('/dashboard')}>
-          Back to dashboard
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-4 text-slate-600">
+        <p className="text-sm">Solo puedes editar tus propios listings.</p>
+        <Button variant="ghost" className="mt-3" onClick={() => navigate('/dashboard')}>
+          Volver al dashboard
         </Button>
       </div>
     )
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-xl font-semibold text-slate-900">Edit listing</h1>
+    <div className="mx-auto max-w-md space-y-6">
+      <h1 className="text-xl font-bold text-[#0F172A]">Editar listing</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <Input
-          label="Title"
-          placeholder="Product title"
+          card
+          placeholder="¿Qué vendes?"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
@@ -162,26 +163,30 @@ export function EditPage() {
           onCurrencyChange={setCurrencyCode}
         />
         <Input
-          label="Description"
-          placeholder="Describe your product"
+          card
+          placeholder="Describe tu producto"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <WhatsAppNumberInput
-          value={whatsappNumber}
-          onChange={setWhatsappNumber}
-        />
-        <div className="w-full">
-          <p className="mb-2 text-sm font-medium text-slate-700">
-            Photos (up to 5)
+        <div className="flex items-center gap-0 overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white py-2 pl-5 pr-2 shadow-[0_0_0_2px_rgba(34,211,238,0.35)] transition-[box-shadow,border-color] focus-within:border-cyan-300 focus-within:shadow-[0_0_0_3px_rgba(34,211,238,0.55),0_0_18px_8px_rgba(34,211,238,0.28)]">
+          <div className="min-w-0 flex-1">
+            <WhatsAppNumberInput value={whatsappNumber} onChange={setWhatsappNumber} hideLabel />
+          </div>
+          <span className="shrink-0 rounded-xl bg-green-500 px-3 py-2 text-[10px] font-bold uppercase tracking-tight text-white">
+            Protected by SSO
+          </span>
+        </div>
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-4 shadow-sm">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+            Fotos (máx. 5)
           </p>
           <div className="flex flex-wrap gap-2">
             {existingUrls.map((url, i) => (
               <div key={keptExistingPaths[i]} className="relative">
                 <img
                   src={url}
-                  alt={`Photo ${i + 1}`}
-                  className="h-20 w-20 rounded-lg object-cover"
+                  alt={`Foto ${i + 1}`}
+                  className="h-20 w-20 rounded-2xl object-cover"
                 />
                 <button
                   type="button"
@@ -211,17 +216,17 @@ export function EditPage() {
             />
           )}
         </div>
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && <p className="text-[10px] text-red-500">{error}</p>}
         <div className="flex gap-2">
           <Button
             type="button"
             variant="ghost"
             onClick={() => navigate('/dashboard')}
           >
-            Cancel
+            Cancelar
           </Button>
           <Button type="submit" variant="primary" disabled={submitting}>
-            {submitting ? 'Saving…' : 'Save'}
+            {submitting ? 'Guardando…' : 'Guardar'}
           </Button>
         </div>
       </form>

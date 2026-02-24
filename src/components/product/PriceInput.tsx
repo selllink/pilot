@@ -24,7 +24,7 @@ export function PriceInput({
   }, [currencyCode])
   return (
     <div
-      className={`rounded-[2rem] border border-slate-100 bg-white p-4 shadow-sm transition-all focus-within:ring-2 focus-within:ring-cyan-400 focus-within:border-cyan-200 ${error ? 'border-red-200 focus-within:ring-red-200' : ''}`}
+      className={`rounded-[2rem] border border-slate-200 bg-white p-4 shadow-sm transition-all focus-within:ring-2 focus-within:ring-cyan-400 focus-within:border-cyan-300 ${error ? 'border-red-200 focus-within:ring-red-200' : ''}`}
     >
       <div className="flex items-center gap-2">
         <input
@@ -34,7 +34,7 @@ export function PriceInput({
           placeholder="0"
           value={price}
           onChange={(e) => onPriceChange(e.target.value)}
-          className="w-full min-w-0 flex-1 bg-transparent text-base font-bold tabular-nums text-slate-900 outline-none placeholder:text-slate-300"
+          className="w-full min-w-0 flex-1 bg-transparent text-base font-bold tabular-nums text-[#0F172A] outline-none placeholder:text-slate-400"
         />
         <select
           value={currencyCode}

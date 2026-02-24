@@ -9,6 +9,7 @@ interface UserMenuProps {
 
 export function UserMenu({ user, onSignOut }: UserMenuProps) {
   const [open, setOpen] = useState(false)
+  const [avatarError, setAvatarError] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
 
@@ -18,6 +19,7 @@ export function UserMenu({ user, onSignOut }: UserMenuProps) {
     user.email ??
     'Usuario'
   const avatarUrl = (user.user_metadata?.picture as string) ?? (user.user_metadata?.avatar_url as string)
+  const showAvatar = avatarUrl && !avatarError
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -42,16 +44,18 @@ export function UserMenu({ user, onSignOut }: UserMenuProps) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full ring-1 ring-slate-200 bg-white transition hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+        className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full p-0 ring-1 ring-slate-200 bg-white transition hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-cyan-400"
         aria-expanded={open}
         aria-haspopup="true"
         aria-label="Menú de usuario"
       >
-        {avatarUrl ? (
+        {showAvatar ? (
           <img
             src={avatarUrl}
             alt=""
-            className="h-9 w-9 rounded-full object-cover"
+            className="block h-full w-full object-cover"
+            referrerPolicy="no-referrer"
+            onError={() => setAvatarError(true)}
           />
         ) : (
           <span className="text-sm font-medium text-slate-600">
@@ -62,16 +66,16 @@ export function UserMenu({ user, onSignOut }: UserMenuProps) {
 
       {open && (
         <div
-          className="absolute right-0 top-full z-20 mt-2 w-64 rounded-lg border border-slate-200 bg-white py-2 shadow-lg"
+          className="absolute right-0 top-full z-20 mt-2 w-64 rounded-xl border border-slate-200 bg-white py-2 shadow-lg"
           role="menu"
         >
           <div className="border-b border-slate-100 px-3 py-2">
-            <p className="truncate font-medium text-slate-900">{displayName}</p>
+            <p className="truncate font-medium text-[#0F172A]">{displayName}</p>
             <p className="truncate text-sm text-slate-500">{user.email}</p>
           </div>
           <Link
             to="/dashboard"
-            className="block px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+            className="block px-3 py-2 text-sm text-slate-600 hover:bg-slate-50"
             role="menuitem"
             onClick={() => setOpen(false)}
           >
@@ -80,7 +84,7 @@ export function UserMenu({ user, onSignOut }: UserMenuProps) {
           <button
             type="button"
             onClick={handleSignOut}
-            className="w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+            className="w-full px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50"
             role="menuitem"
           >
             Cerrar sesión

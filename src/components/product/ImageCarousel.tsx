@@ -35,8 +35,8 @@ export function ImageCarousel({ imageUrls, alt, className = '' }: ImageCarouselP
 
   if (!imageUrls.length) {
     return (
-      <div className={`flex aspect-square items-center justify-center rounded-2xl bg-slate-200 ${className}`}>
-        <span className="text-slate-500">Sin imagen</span>
+      <div className={`flex aspect-square items-center justify-center rounded-3xl bg-slate-100 ${className}`}>
+        <span className="text-sm text-slate-500">Sin imagen</span>
       </div>
     )
   }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { SuccessModal } from '@/components/modals/SuccessModal'
+import { Button } from '@/components/ui/Button'
 
 /** URL para compartir (WhatsApp, copiar): usa /s/ para que el preview muestre título e imagen. */
 function getShareUrl(slug: string): string {
@@ -25,15 +26,11 @@ export function SuccessPage() {
 
   if (!slug) {
     return (
-      <div className="rounded-lg bg-amber-50 p-4 text-amber-800">
-        <p>No listing link found. Create a new listing from the home page.</p>
-        <button
-          type="button"
-          className="mt-2 text-sm font-medium underline"
-          onClick={() => navigate('/')}
-        >
-          Go to create
-        </button>
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-4 text-slate-600">
+        <p className="text-sm">No se encontró el link del listing. Crea uno nuevo desde la página principal.</p>
+        <Button variant="ghost" className="mt-3" onClick={() => navigate('/')}>
+          Ir a crear
+        </Button>
       </div>
     )
   }

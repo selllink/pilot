@@ -15,8 +15,8 @@ export function Countdown({ expiresAt, className = '' }: CountdownProps) {
   const days = daysRemaining(expiresAt)
   const expired = days <= 0
   return (
-    <span className={`text-sm ${expired ? 'text-red-500' : 'text-slate-600'} ${className}`}>
-      {expired ? 'Expired' : `${days} day${days !== 1 ? 's' : ''} left`}
+    <span className={`text-sm font-medium ${expired ? 'text-red-500' : 'text-slate-600'} ${className}`}>
+      {expired ? 'Expirado' : `${days} día${days !== 1 ? 's' : ''} restante${days !== 1 ? 's' : ''}`}
     </span>
   )
 }

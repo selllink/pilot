@@ -68,7 +68,7 @@ function OtherListingsCarousel({ otherListings, getListingImageUrls }: OtherList
             <Link
               key={other.id}
               to={`/v/${other.short_slug}`}
-              className="flex min-w-0 flex-col overflow-hidden rounded-[2rem] border border-slate-100 bg-white shadow-sm transition hover:shadow-md"
+              className="flex min-w-0 flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm transition hover:shadow-md"
             >
               <div className="aspect-square w-full overflow-hidden bg-slate-100">
                 {otherImages[0] ? (
@@ -84,7 +84,7 @@ function OtherListingsCarousel({ otherListings, getListingImageUrls }: OtherList
                 )}
               </div>
               <div className="min-w-0 p-2">
-                <p className="truncate text-xs font-semibold text-slate-800">{other.title}</p>
+                <p className="truncate text-xs font-semibold text-[#0F172A]">{other.title}</p>
                 <p className="mt-0.5 truncate text-sm font-bold text-cyan-500">
                   $ {Number(other.price).toLocaleString()} <span className="uppercase">{other.currency_code}</span>
                 </p>
@@ -116,6 +116,7 @@ export function ViewPage() {
   const { shortSlug } = useParams<{ shortSlug: string }>()
   const navigate = useNavigate()
   const viewRecorded = useRef(false)
+  const [creatorAvatarError, setCreatorAvatarError] = useState(false)
 
   const { data: listing, isLoading, error } = useQuery({
     queryKey: ['listing', shortSlug],
@@ -149,17 +150,17 @@ export function ViewPage() {
   if (isLoading || !shortSlug) {
     return (
       <div className="animate-pulse space-y-4">
-        <div className="aspect-square rounded-[2rem] bg-slate-200" />
-        <div className="h-8 w-1/2 rounded-[2rem] bg-slate-200" />
-        <div className="h-4 w-full rounded-[2rem] bg-slate-200" />
+        <div className="aspect-square rounded-[2rem] bg-slate-100" />
+        <div className="h-8 w-1/2 rounded-[2rem] bg-slate-100" />
+        <div className="h-4 w-full rounded-[2rem] bg-slate-100" />
       </div>
     )
   }
 
   if (error || !listing) {
     return (
-      <div className="rounded-[2rem] border border-slate-100 bg-white p-6 shadow-sm">
-        <p className="text-slate-800">Este link no existe o ha expirado.</p>
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <p className="text-[#0F172A]">Este link no existe o ha expirado.</p>
         <Button variant="ghost" className="mt-3" onClick={() => navigate('/')}>
           Volver
         </Button>
@@ -176,7 +177,7 @@ export function ViewPage() {
       <div className="mb-4 flex items-center justify-between">
         <button
           type="button"
-          className="text-sm font-medium text-slate-600 hover:text-slate-900"
+          className="text-sm font-medium text-slate-600 hover:text-[#0F172A]"
           onClick={() => navigate(-1)}
         >
           Atrás
@@ -197,16 +198,16 @@ export function ViewPage() {
         </button>
       </div>
 
-      <div className="mb-6 overflow-hidden rounded-[2rem] border border-slate-100 bg-white shadow-sm">
+      <div className="mb-6 overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
         <ImageCarousel imageUrls={imageUrls} alt={listing.title} className="overflow-hidden rounded-[2rem]" />
       </div>
 
-      <div className="rounded-[2rem] border border-slate-100 bg-white p-5 shadow-sm">
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
         <div className="mb-2 flex items-center justify-between gap-2">
-          <h1 className="truncate text-lg font-bold text-slate-800">{listing.title}</h1>
+          <h1 className="truncate text-lg font-bold text-[#0F172A]">{listing.title}</h1>
           {isExpired && <Badge status="expired" className="shrink-0" />}
         </div>
-        <p className="text-xl font-extrabold text-cyan-500 whitespace-nowrap">
+        <p className="text-xl font-extrabold text-cyan-500 whitespace-nowrap tabular-nums">
           $ {Number(listing.price).toLocaleString()} <span className="uppercase">{listing.currency_code}</span>
         </p>
         <p className="mt-2 flex items-center gap-1 text-[10px] text-slate-400">
@@ -219,20 +220,22 @@ export function ViewPage() {
       </div>
 
       {listing.creator_verified_google && (
-        <div className="mt-4 flex items-center gap-3 rounded-[2rem] border border-slate-100 bg-white p-4 shadow-sm">
-          {listing.creator_avatar_url ? (
+        <div className="mt-4 flex items-center gap-3 rounded-[2rem] border border-slate-200 bg-white p-4 shadow-sm">
+          {listing.creator_avatar_url && !creatorAvatarError ? (
             <img
               src={listing.creator_avatar_url}
               alt=""
               className="h-12 w-12 rounded-full object-cover"
+              referrerPolicy="no-referrer"
+              onError={() => setCreatorAvatarError(true)}
             />
           ) : (
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-200 text-lg font-medium text-slate-500">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-lg font-medium text-slate-500">
               {(listing.creator_name || 'V').charAt(0).toUpperCase()}
             </div>
           )}
           <div className="min-w-0 flex-1">
-            <p className="truncate font-medium text-slate-900">
+            <p className="truncate font-medium text-[#0F172A]">
               {listing.creator_name || 'Vendedor'}
             </p>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-700">

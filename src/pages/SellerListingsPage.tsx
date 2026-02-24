@@ -26,10 +26,10 @@ export function SellerListingsPage() {
   if (creatorLoading || !creatorSlug) {
     return (
       <div className="animate-pulse space-y-4">
-        <div className="h-8 w-1/3 rounded-[2rem] bg-slate-200" />
+        <div className="h-8 w-1/3 rounded-[2rem] bg-slate-100" />
         <div className="grid grid-cols-3 gap-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="aspect-square rounded-[2rem] bg-slate-200" />
+            <div key={i} className="aspect-square rounded-[2rem] bg-slate-100" />
           ))}
         </div>
       </div>
@@ -38,8 +38,8 @@ export function SellerListingsPage() {
 
   if (creatorError || !creator) {
     return (
-      <div className="rounded-[2rem] border border-slate-100 bg-white p-6 shadow-sm">
-        <p className="text-slate-800">Este link no existe o ha expirado.</p>
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
+        <p className="text-[#0F172A]">Este link no existe o ha expirado.</p>
         <Button variant="ghost" className="mt-3" onClick={() => navigate('/')}>
           Ir al inicio
         </Button>
@@ -51,17 +51,17 @@ export function SellerListingsPage() {
 
   return (
     <div className="pb-8">
-      <h1 className="mb-4 text-lg font-bold text-slate-800">
+      <h1 className="mb-4 text-lg font-bold text-[#0F172A]">
         Publicaciones de {creatorName}
       </h1>
       {listingsLoading ? (
         <div className="grid grid-cols-3 gap-3">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="aspect-square animate-pulse rounded-[2rem] bg-slate-200" />
+            <div key={i} className="aspect-square animate-pulse rounded-[2rem] bg-slate-100" />
           ))}
         </div>
       ) : listings.length === 0 ? (
-        <div className="rounded-[2rem] border border-slate-100 bg-white p-6 shadow-sm">
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
           <p className="text-slate-600">No hay publicaciones activas en este momento.</p>
         </div>
       ) : (
@@ -72,7 +72,7 @@ export function SellerListingsPage() {
               <Link
                 key={listing.id}
                 to={`/v/${listing.short_slug}`}
-                className="flex min-w-0 flex-col overflow-hidden rounded-[2rem] border border-slate-100 bg-white shadow-sm transition hover:shadow-md"
+                className="flex min-w-0 flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm transition hover:shadow-md"
               >
                 <div className="aspect-square w-full overflow-hidden bg-slate-100">
                   {imageUrls[0] ? (
@@ -88,7 +88,7 @@ export function SellerListingsPage() {
                   )}
                 </div>
                 <div className="min-w-0 p-2">
-                  <p className="truncate text-xs font-semibold text-slate-800">{listing.title}</p>
+                  <p className="truncate text-xs font-semibold text-[#0F172A]">{listing.title}</p>
                   <p className="mt-0.5 truncate text-sm font-bold text-cyan-500">
                     $ {Number(listing.price).toLocaleString()}{' '}
                     <span className="uppercase">{listing.currency_code}</span>

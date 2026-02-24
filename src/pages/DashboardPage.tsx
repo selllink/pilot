@@ -115,7 +115,7 @@ function ListingCard({
       tabIndex={0}
       onClick={handleCardClick}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCardClick() } }}
-      className="relative flex cursor-pointer items-center gap-4 rounded-[2rem] border border-slate-100 bg-white p-5 shadow-sm transition-all hover:shadow-md"
+      className="relative flex cursor-pointer items-center gap-4 rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm transition-all hover:shadow-md"
     >
       <div className="absolute right-5 top-5 flex flex-col items-end gap-1.5" onClick={(e) => e.stopPropagation()}>
         <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wider text-slate-500">
@@ -129,8 +129,8 @@ function ListingCard({
         ) : null}
       </div>
       <div className="min-w-0 flex-1 pr-24">
-        <h3 className="truncate text-lg font-bold text-slate-800">{listing.title}</h3>
-        <p className="mt-0.5 text-xl font-extrabold text-cyan-500 whitespace-nowrap">
+        <h3 className="truncate text-lg font-bold text-[#0F172A]">{listing.title}</h3>
+        <p className="mt-0.5 text-xl font-extrabold text-cyan-500 whitespace-nowrap tabular-nums">
           $ {Number(listing.price).toLocaleString()} <span className="uppercase">{listing.currency_code}</span>
         </p>
         <p className="mt-2 flex items-center gap-1 text-[10px] text-slate-400">
@@ -162,14 +162,14 @@ function ListingCard({
             <DotsIcon className="h-5 w-5" />
           </button>
           {menuOpen && (
-            <div className="absolute right-0 top-full z-10 mt-1 min-w-[140px] rounded-xl border border-slate-100 bg-white py-1 shadow-lg">
+            <div className="absolute right-0 top-full z-10 mt-1 min-w-[140px] rounded-xl border border-slate-200 bg-white py-1 shadow-lg">
               <button
                 type="button"
                 onClick={() => {
                   navigate(`/dashboard/edit/${listing.id}`)
                   setMenuOpen(false)
                 }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50"
               >
                 <PencilIcon className="h-4 w-4" /> Editar
               </button>
@@ -179,7 +179,7 @@ function ListingCard({
                   navigate(`/v/${listing.short_slug}`)
                   setMenuOpen(false)
                 }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50"
               >
                 <CopyIcon className="h-4 w-4" /> Ver
               </button>
@@ -189,7 +189,7 @@ function ListingCard({
                   onDuplicate(listing)
                   setMenuOpen(false)
                 }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50"
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-slate-600 hover:bg-slate-50"
               >
                 <DuplicateIcon className="h-4 w-4" /> Duplicar
               </button>
@@ -244,16 +244,16 @@ export function DashboardPage() {
   })
 
   if (authLoading) {
-    return <div className="text-slate-600">Loading…</div>
+    return <div className="text-sm text-slate-600">Cargando…</div>
   }
 
   if (!user) {
     return (
-      <div className="rounded-lg bg-slate-100 p-4 text-slate-700">
-        <p className="font-medium">Sign in to manage your listings</p>
-        <p className="mt-1 text-sm">Use the same email you used when creating listings.</p>
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-4 text-slate-600">
+        <p className="font-medium text-[#0F172A]">Inicia sesión para gestionar tus listings</p>
+        <p className="mt-1 text-sm">Usa el mismo email con el que creaste tus listings.</p>
         <Button variant="primary" className="mt-3" onClick={signInWithGoogle}>
-          Sign in with Google
+          Iniciar sesión con Google
         </Button>
       </div>
     )
@@ -262,11 +262,11 @@ export function DashboardPage() {
   return (
     <div className="space-y-6">
       <Button type="button" variant="magic" onClick={() => navigate('/')}>
-        Create new listing ✨
+        Crear nuevo listing ✨
       </Button>
 
       {creatorSlug && (
-        <div className="rounded-[2rem] border border-slate-100 bg-white p-5 shadow-sm">
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
           <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-slate-500">
             Compartir mi tienda
           </h2>
@@ -274,7 +274,7 @@ export function DashboardPage() {
             Link con todas tus publicaciones activas (tiene preview al compartir en WhatsApp, etc.)
           </p>
           <div className="flex flex-wrap items-center gap-3">
-            <code className="max-w-full truncate rounded-xl bg-slate-100 px-3 py-2 text-sm text-slate-700">
+            <code className="max-w-full truncate rounded-xl bg-slate-100 px-3 py-2 text-sm text-[#0F172A]">
               {typeof window !== 'undefined' ? window.location.origin : ''}/s/u/{creatorSlug}
             </code>
             <div className="flex gap-2">
@@ -307,7 +307,7 @@ export function DashboardPage() {
         </div>
       )}
       {slugLoading && !creatorSlug && (
-        <div className="rounded-[2rem] border border-slate-100 bg-white p-5 shadow-sm">
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-sm text-slate-500">Generando link de tu tienda…</p>
         </div>
       )}
@@ -315,11 +315,11 @@ export function DashboardPage() {
       {isLoading ? (
         <div className="animate-pulse space-y-3">
           {[1, 2].map((i) => (
-            <div key={i} className="h-24 rounded-xl bg-slate-200" />
+            <div key={i} className="h-24 rounded-xl bg-slate-100" />
           ))}
         </div>
       ) : listings.length === 0 ? (
-        <p className="text-slate-600">You have no listings yet. Create one to get started.</p>
+        <p className="text-slate-600">Aún no tienes listings. Crea uno para comenzar.</p>
       ) : (
         <div className="space-y-3">
           {listings.map((listing) => (
@@ -329,7 +329,7 @@ export function DashboardPage() {
               viewCount={counts[listing.id]?.views ?? 0}
               whatsappClickCount={counts[listing.id]?.whatsapp_clicks ?? 0}
               onDelete={(id) => {
-                if (confirm('Delete this listing?')) deleteMutation.mutate(id)
+                if (confirm('¿Eliminar este listing?')) deleteMutation.mutate(id)
               }}
               onDuplicate={(l) => duplicateMutation.mutate(l)}
             />
