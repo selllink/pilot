@@ -64,15 +64,15 @@ export function ImageUploader({
   const canAdd = files.length < MAX_FILES
 
   return (
-    <div className="w-full rounded-[2rem] border border-slate-100 bg-white p-4 shadow-sm">
+    <div className="w-full rounded-[2.5rem] border border-slate-200 bg-white p-4 shadow-sm transition-[box-shadow,border-color] focus-within:border-cyan-200 focus-within:shadow-[0_0_0_2px_rgba(34,211,238,0.2)]">
       {showTitle && (
-        <label className="text-[10px] uppercase font-bold text-slate-400 tracking-widest ml-0.5 mb-3 block">
-          Fotos del producto (máx. {MAX_FILES})
+        <label className="mb-3 ml-0.5 block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+          Fotos del Producto
         </label>
       )}
       <div className="grid grid-cols-3 gap-2">
         <label
-          className={`col-span-2 flex h-40 cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 transition-colors hover:border-slate-300 hover:bg-slate-100 ${mainUrl ? 'hidden' : ''}`}
+          className={`group col-span-2 flex h-36 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-3xl border-2 border-dashed border-slate-200 bg-slate-50/80 transition-all hover:border-cyan-200 hover:bg-cyan-50/50 ${mainUrl ? 'hidden' : ''}`}
         >
           <input
             ref={inputRef}
@@ -82,40 +82,41 @@ export function ImageUploader({
             className="hidden"
             onChange={handleSelect}
           />
-          <svg className="h-8 w-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-            <path strokeWidth={2} strokeLinecap="round" d="M12 4v16m8-8H4" />
-          </svg>
-          <span className="mt-2 text-xs text-slate-400">Toca para subir fotos</span>
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md transition-transform group-hover:scale-105">
+            <span className="text-lg font-bold text-cyan-600">+</span>
+          </div>
+          <span className="text-sm font-medium text-slate-600">Agrega fotos de tu producto</span>
+          <span className="text-[11px] text-slate-400">Hasta {MAX_FILES} fotos · JPG, PNG o WebP · máx. 5 MB</span>
         </label>
         {mainUrl && (
-          <div className="relative col-span-2 h-40 overflow-hidden rounded-2xl bg-slate-100">
+          <div className="relative col-span-2 h-36 overflow-hidden rounded-3xl bg-slate-100 ring-1 ring-slate-100">
             <img src={mainUrl} alt="" className="h-full w-full object-cover" />
             <button
               type="button"
-              aria-label="Remove photo"
-              className="absolute right-2 top-2 rounded-full bg-red-500 p-1 text-white shadow hover:bg-red-600"
+              aria-label="Quitar foto"
+              className="absolute right-2 top-2 rounded-full bg-white/90 p-1.5 text-slate-700 shadow-sm transition-colors hover:bg-red-500 hover:text-white"
               onClick={() => remove(0)}
             >
-              <span className="text-xs">×</span>
+              <span className="text-xs font-medium">×</span>
             </button>
           </div>
         )}
-        <div className="flex flex-col gap-2 overflow-y-auto max-h-40">
+        <div className="flex max-h-36 flex-col gap-2 overflow-y-auto">
           {thumbUrls.map((url, i) => (
-            <div key={i} className="relative h-[76px] overflow-hidden rounded-xl bg-slate-100">
+            <div key={i} className="relative h-[72px] overflow-hidden rounded-2xl bg-slate-100 ring-1 ring-slate-100">
               <img src={url} alt="" className="h-full w-full object-cover" />
               <button
                 type="button"
-                aria-label="Remove photo"
-                className="absolute right-1 top-1 rounded-full bg-red-500 p-0.5 text-white hover:bg-red-600"
+                aria-label="Quitar foto"
+                className="absolute right-1 top-1 rounded-full bg-white/90 p-1 text-slate-600 shadow-sm transition-colors hover:bg-red-500 hover:text-white"
                 onClick={() => remove(i + 1)}
               >
-                <span className="text-[10px]">×</span>
+                <span className="text-[10px] font-medium">×</span>
               </button>
             </div>
           ))}
           {canAdd && (
-            <label className="flex h-[76px] cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 text-2xl text-slate-300 transition-colors hover:border-slate-300 hover:bg-slate-100">
+            <label className="flex h-[72px] cursor-pointer flex-col items-center justify-center gap-0.5 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/80 text-slate-400 transition-all hover:border-cyan-200 hover:bg-cyan-50/50 hover:text-cyan-600">
               <input
                 ref={inputRef}
                 type="file"
@@ -124,7 +125,8 @@ export function ImageUploader({
                 className="hidden"
                 onChange={handleSelect}
               />
-              +
+              <span className="text-xl font-bold">+</span>
+              <span className="text-[10px] font-medium">Agregar</span>
             </label>
           )}
         </div>

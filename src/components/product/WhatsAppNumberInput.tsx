@@ -18,14 +18,16 @@ interface WhatsAppNumberInputProps {
   value: string
   onChange: (value: string) => void
   error?: string
+  /** Cuando true, no se muestra el label (útil si el padre renderiza su propia fila de label). */
+  hideLabel?: boolean
 }
 
-export function WhatsAppNumberInput({ value, onChange, error }: WhatsAppNumberInputProps) {
+export function WhatsAppNumberInput({ value, onChange, error, hideLabel }: WhatsAppNumberInputProps) {
   return (
     <Input
       type="tel"
-      label="Número WhatsApp"
-      placeholder="5215512345678 (52=MX, 1=USA, 54=AR…)"
+      label={hideLabel ? undefined : 'Número WhatsApp'}
+      placeholder="WhatsApp number"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       error={error}

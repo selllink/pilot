@@ -8,11 +8,36 @@ import { PriceInput } from '@/components/product/PriceInput'
 import { WhatsAppNumberInput, normalizeWhatsAppNumber, validateWhatsAppNumber } from '@/components/product/WhatsAppNumberInput'
 import { createListing } from '@/lib/listings'
 import type { CreateListingPayload } from '@/lib/types'
+import { getLocaleCurrencyCode } from '@/lib/localeCurrency'
 
 function LockIcon() {
   return (
     <svg className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+    </svg>
+  )
+}
+
+function StepCreaIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+    </svg>
+  )
+}
+
+function StepComparteIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+    </svg>
+  )
+}
+
+function StepVendeIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
     </svg>
   )
 }
@@ -26,7 +51,7 @@ export function CreatePage() {
   const { user } = useAuth()
   const [title, setTitle] = useState('')
   const [price, setPrice] = useState('')
-  const [currencyCode, setCurrencyCode] = useState('MXN')
+  const [currencyCode, setCurrencyCode] = useState(() => getLocaleCurrencyCode())
   const [description, setDescription] = useState('')
   const [whatsappNumber, setWhatsappNumber] = useState('')
   const [creatorEmail, setCreatorEmail] = useState('')
@@ -106,13 +131,58 @@ export function CreatePage() {
   }
 
   return (
-    <div className="mx-auto max-w-md space-y-6">
-      <h1 className="text-xl font-bold text-[#0F172A]">Create Listing</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <div className="mx-auto max-w-md">
+      <section className="mb-10 text-center">
+        <h1 className="text-3xl font-extrabold tracking-tight leading-tight text-[#0F172A] sm:text-4xl">
+          Tus ventas, a un <br />
+          <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+            solo link
+          </span>{' '}
+          de distancia.
+        </h1>
+        <p className="mt-4 text-sm leading-relaxed text-slate-600">
+          Diseñado para vendedores de redes sociales. Crea listings rápidos que tus clientes amarán.
+        </p>
+        <div className="mt-6 flex justify-center gap-6 text-sm font-bold uppercase tracking-widest text-slate-600">
+          <span className="flex items-center gap-2">
+            <span className="shrink-0 text-slate-600">
+              <StepCreaIcon className="h-5 w-5" />
+            </span>
+            <span>1. Crea</span>
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="shrink-0 text-slate-600">
+              <StepComparteIcon className="h-5 w-5" />
+            </span>
+            <span>2. Comparte</span>
+          </span>
+          <span className="flex items-center gap-2">
+            <span className="shrink-0 text-slate-600">
+              <StepVendeIcon className="h-5 w-5" />
+            </span>
+            <span>3. Vende</span>
+          </span>
+        </div>
+        <div className="mt-4 flex items-center gap-3 rounded-2xl bg-slate-100 px-4 py-3">
+          <span className="shrink-0 text-slate-600">
+            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </span>
+          <p className="text-xs font-medium text-slate-600">
+            Links activos por <span className="font-bold text-slate-800">30 días</span>
+            <span className="mx-1.5 text-slate-400">•</span>
+            Edita con <span className="font-bold text-slate-800">SSO</span>
+          </p>
+        </div>
+      </section>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
         <ImageUploader
           files={files}
           previewUrls={previewUrls}
           onFilesChange={setFiles}
+          showTitle={false}
         />
         <div className="grid grid-cols-2 gap-4">
           <PriceInput
@@ -123,8 +193,7 @@ export function CreatePage() {
           />
           <Input
             card
-            label="Title"
-            placeholder="Ej. Bicicleta de montaña"
+            placeholder="¿Qué vendes?"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
@@ -132,13 +201,17 @@ export function CreatePage() {
         </div>
         <Input
           card
-          label="Descripción"
           placeholder="Describe tu producto"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <div className="rounded-[2rem] border border-slate-100 bg-white p-4 shadow-sm focus-within:ring-2 focus-within:ring-cyan-400 focus-within:border-cyan-200">
-          <WhatsAppNumberInput value={whatsappNumber} onChange={setWhatsappNumber} />
+        <div className="flex items-center gap-0 overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white py-2 pl-5 pr-2 shadow-[0_0_0_2px_rgba(34,211,238,0.35)] transition-[box-shadow,border-color] focus-within:border-cyan-300 focus-within:shadow-[0_0_0_3px_rgba(34,211,238,0.55),0_0_18px_8px_rgba(34,211,238,0.28)]">
+          <div className="min-w-0 flex-1">
+            <WhatsAppNumberInput value={whatsappNumber} onChange={setWhatsappNumber} hideLabel />
+          </div>
+          <span className="shrink-0 rounded-xl bg-green-500 px-3 py-2 text-[10px] font-bold uppercase tracking-tight text-white">
+            Protected by SSO
+          </span>
         </div>
         {!isCreatorGoogle && (
           <div className="rounded-[2rem] border border-slate-100 bg-white p-4 shadow-sm focus-within:ring-2 focus-within:ring-cyan-400 focus-within:border-cyan-200">
@@ -146,7 +219,7 @@ export function CreatePage() {
               <span className="text-slate-400" aria-hidden>
                 <LockIcon />
               </span>
-              <div className="flex-1 min-w-0">
+              <div className="min-w-0 flex-1">
                 <Input
                   label="Tu email"
                   type="email"
@@ -157,29 +230,25 @@ export function CreatePage() {
                 />
               </div>
             </div>
-            <p className="mt-1 text-[10px] text-slate-400 uppercase tracking-tighter">
+            <p className="mt-1 text-[10px] uppercase tracking-tighter text-slate-400">
               Para editar después necesitarás iniciar sesión con Google.
             </p>
           </div>
         )}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[10px] uppercase tracking-tighter text-slate-400">
-            Usa el icono para validar tu link
-          </span>
-          <span className="rounded-full bg-emerald-500 px-2.5 py-1 text-[10px] font-medium uppercase tracking-wide text-white">
-            Protected by SSO
-          </span>
-        </div>
         {error && <p className="text-[10px] text-red-500">{error}</p>}
-        <div>
-          <Button type="submit" variant="magic" disabled={submitting}>
-            {submitting ? 'Generando…' : 'Generar mi link mágico ✨'}
+        <div className="pt-4">
+          <Button
+            type="submit"
+            variant="magic"
+            disabled={submitting}
+            className="py-5 text-[11px] font-extrabold uppercase tracking-[0.2em]"
+          >
+            {submitting ? 'Generando…' : 'Generar mi Link Mágico ✨'}
           </Button>
-          <p className="mt-4 text-center text-[10px] uppercase tracking-tighter text-slate-400">
-            El link será válido por <span className="font-bold text-blue-500">30 días</span>.
-            Requiere <span className="font-bold">SSO</span> para edición posterior.
-          </p>
         </div>
+        <p className="pt-4 text-center text-xs font-medium text-slate-500">
+          Únete a +1000 vendedores que ya usan LinkVenta para sus historias.
+        </p>
       </form>
     </div>
   )
