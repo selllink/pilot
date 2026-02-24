@@ -9,81 +9,124 @@ Este documento define la identidad visual, la experiencia de usuario y la estruc
 ## 1. Identidad Visual (Design Tokens)
 
 ### Colores
-| Uso | Hex | Tailwind Class |
+| Uso | Hex / referencia | Tailwind Class |
 | :--- | :--- | :--- |
-| **Fondo App** | `#F8FAFC` | `bg-[#F8FAFC]` |
-| **Texto Primario** | `#0F172A` | `text-[#0F172A]` |
-| **Acento (Primario)** | Degradado logo | `from-blue-600 to-cyan-500` |
-| **WhatsApp (Acción)** | `#22C55E` | `bg-green-500` |
-| **Error/Expiración** | `#EF4444` | `text-red-500` |
+| **Fondo página** | `#F8FAFC` | `bg-[#F8FAFC]` |
+| **Header** | Blanco | `bg-white` |
+| **Texto primario** | `#0F172A` | `text-[#0F172A]` |
+| **Acento / CTA** | Degradado logo | `from-blue-600 to-cyan-500` |
+| **Glow cyan (focus)** | Cyan suave | `shadow-[0_0_0_2px_rgba(34,211,238,0.35)]`, focus más intenso |
+| **WhatsApp / SSO** | Verde | `bg-green-500`, texto blanco |
+| **Error / expiración** | Rojo | `text-red-500` |
 
-### Tipografía y labels
-* **Labels de campos:** `text-[10px]` en **MAYÚSCULAS**, `font-bold`, `tracking-widest`, `text-slate-400`.
-* **Cuerpo/UI:** Sans-serif moderna.
-* **Precios/Números:** Negrita para protagonismo.
+### Tipografía
+* **Títulos hero:** `text-3xl` / `sm:text-4xl`, `font-extrabold`, `tracking-tight`, `text-[#0F172A]`.
+* **Acento en hero:** "solo link" con `bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent`.
+* **Cuerpo / subtítulos:** `text-sm`, `text-slate-600`.
+* **Campos:** Sin labels externos; solo placeholders (ej. "¿Qué vendes?", "Describe tu producto", "WhatsApp number").
+* **Precios / números:** `font-bold`, `tabular-nums` donde aplique.
 
 ---
 
 ## 2. Estructura global (Layout y Header)
 
-- **Fondo:** `#F8FAFC` en todo el layout para que las tarjetas blancas resalten.
-- **Header:** Logo a la izquierda (icono + "LinkVenta Express"); avatar del usuario a la derecha con **borde fino** (`border-2 border-slate-200`) para que no se "pegue" al fondo.
-- **Contenedor principal:** `max-w-md` o `max-w-lg` centrado, `space-y-6` entre tarjetas.
+- **Fondo app:** `#F8FAFC` en el contenedor principal; el **header** es blanco (`bg-white`) con `border-b border-slate-100`.
+- **Header:**
+  - Izquierda: logo (icono) + **"LinkVenta"** en negrita `text-[#0F172A]` + **"Express"** en gris (`text-slate-400`).
+  - Derecha: botón **"Mis Listings"** (pill sutil: `rounded-full`, `border border-slate-200/80`, `bg-white/90`, `text-xs font-medium text-slate-500`) y, si hay usuario logueado, **avatar** (UserMenu).
+- **Contenedor principal:** `max-w-md` o `max-w-lg` centrado; en CreatePage el formulario usa `space-y-4`.
 
 ---
 
-## 3. Pantallas Principales
+## 3. Pantalla de creación (CreatePage)
 
-### A. Generador (Creación) — Bento Style
-- **Fondo:** Gris muy suave `#F8FAFC`; elementos en **tarjetas blancas** (`rounded-[2rem]`, `border border-slate-100`, `shadow-sm`).
-- **Módulo de fotos:** El más grande. Borde punteado (`border-dashed`) suave en la zona de agregar fotos. Grid: zona principal (2/3) + miniaturas (1/3).
-- **Título y Precio:** En grid 50% cada uno en escritorio; cada uno en su tarjeta con `focus-within:ring-2 focus-within:ring-cyan-400`.
-- **Precio:** Selector de moneda **integrado** dentro del campo (a la derecha, `bg-slate-100`), no un cuadro aparte.
-- **Email:** Icono de candado o escudo cerca del campo; texto de ayuda: "Para editar después necesitarás iniciar sesión con Google".
-- **Botón principal:** Variante **"magic"**: degradado azul eléctrico a cian del logo, efecto glow suave, texto "Generar Link Mágico ✨".
-- **Debajo del botón:** "El link será válido por **30 días**. Requiere **SSO** para edición posterior."
+La página de crear listing (`src/pages/CreatePage.tsx`) se compone de: **hero** + **formulario**. Sin labels externos en los campos; el texto va en placeholders o dentro del componente.
 
-### B. Ficha Pública (Visualización)
-- **Foco:** El producto es el protagonista.
-- **Layout:**
-    - **Header:** Botón "Compartir" y "Atrás".
-    - **Carrusel:** Imágenes en ratio 1:1 o 4:3 con indicadores de puntos.
-    - **Body:** Precio (H1, con `currency_code`), Título (H2), Descripción (P), Badge de expiración.
-    - **Footer Sticky:** Botón ancho de WhatsApp (genera `wa.me/{number}?text=...`) que no desaparece al hacer scroll.
-- **Métricas:** Al montar la vista se registra un evento `view` en `listing_events`; al clic en WhatsApp se registra `whatsapp_click`.
+### 3.1 Hero (arriba del formulario)
 
-### C. Dashboard (Gestión SSO)
-- **Foco:** Control y métricas rápidas.
-- **Vista:** Lista de tarjetas compactas (datos de `listings` + agregados de `listing_events`).
-- **Acciones:** Editar, Eliminar, Duplicar (clonar ficha: nuevo `short_slug`, nueva `expires_at`).
-- **Métricas:** Contador de vistas y de clics en WhatsApp por ficha.
+- **Título:**  
+  "Tus ventas, a un **solo link** de distancia."  
+  - "solo link" con degradado `from-blue-600 to-cyan-500`; el resto en `text-[#0F172A]`.
+- **Subtítulo:**  
+  "Diseñado para vendedores de redes sociales. Crea listings rápidos que tus clientes amarán."  
+  - `text-sm`, `text-slate-600`, `mt-4`.
+- **Pasos (1. Crea, 2. Comparte, 3. Vende):**  
+  - Iconos (lápiz, compartir, chat) sin círculo, `h-5 w-5`, `text-slate-600`.  
+  - Texto: `text-sm font-bold uppercase tracking-widest text-slate-600`, en una fila con `gap-6`.
+- **Pill informativa:**  
+  "Links activos por **30 días** • Edita con **SSO**"  
+  - `rounded-2xl bg-slate-100 px-4 py-3`, icono de reloj pequeño (`h-3.5 w-3.5`) a la izquierda, texto `text-xs font-medium text-slate-600`; "30 días" y "SSO" en negrita.
+- **Espaciado:** sección con `mb-5`.
+
+### 3.2 Formulario (orden de campos)
+
+1. **Título (¿Qué vendes?)**  
+   - `Input` con `card`, solo placeholder "¿Qué vendes?", sin label. Primero que completa el usuario.
+
+2. **Fotos del producto**  
+   - `ImageUploader` con `showTitle={false}`.  
+   - Texto principal: "Agrega fotos de tu producto"; secundario: "Hasta 5 fotos · JPG, PNG o WebP · máx. 5 MB".  
+   - Zona con borde dashed, hover cyan suave; botón "Agregar" en miniaturas.
+
+3. **Precio**  
+   - `PriceInput`: solo input numérico + selector de moneda (ARS / USD) a la derecha, sin label "PRICE".  
+   - Monedas definidas en `src/lib/localeCurrency.ts` (por ahora solo ARS y USD).
+
+4. **Descripción**  
+   - `Input` con `card`, placeholder "Describe tu producto", sin label.
+
+5. **WhatsApp**  
+   - Un solo bloque: input + badge "Protected by SSO" en la misma fila.  
+   - Contenedor: `rounded-[2.5rem]`, fondo blanco, borde y sombra cyan (`shadow-[0_0_0_2px_rgba(34,211,238,0.35)]` y más intenso en `focus-within`).  
+   - Placeholder del input: "WhatsApp number".  
+   - Badge verde: `rounded-xl bg-green-500`, texto blanco "Protected by SSO", a la derecha del input.
+
+6. **Email (si no hay Google)**  
+   - Bloque con icono de candado; campo "Tu email", placeholder "tú@ejemplo.com".  
+   - Texto de ayuda: "Para editar después necesitarás iniciar sesión con Google."
+
+7. **Botón principal**  
+   - "Generar mi Link Mágico ✨" (o "Generando…" al enviar).  
+   - `Button` variante `magic`, `py-5`, `text-[11px] font-extrabold uppercase tracking-[0.2em]`.
+
+8. **Footer del formulario**  
+   - "Únete a +1000 vendedores que ya usan LinkVenta para sus historias."  
+   - `text-xs font-medium text-slate-500`, centrado.
 
 ---
 
-## 4. Mapa de Componentes (React, nombres en inglés)
+## 4. Otras pantallas (resumen)
 
-### `src/components/ui` (atómicos)
-- `Button.tsx`: Variantes (Primary, Secondary, Ghost, WhatsApp, **Magic** con degradado y glow).
-- `Input.tsx`: Labels en mayúsculas pequeñas (`text-[10px] uppercase tracking-widest`); opción `card` para tarjeta bento con ring cyan en focus.
-- `Badge.tsx`: Estados (Active, Expired).
+### Ficha pública (ViewPage)
+- Header con "Compartir" y "Atrás"; carrusel de imágenes; precio, título, descripción, badge de expiración; footer sticky con botón WhatsApp.
 
-### `src/components/product` (moleculares)
-- `ImageUploader.tsx`: Tarjeta bento con módulo de fotos grande (dashed) + miniaturas en columna.
-- `PriceInput.tsx`: Precio con moneda integrada a la derecha dentro del campo (`bg-slate-100`).
-- `ImageCarousel.tsx`: Slider táctil optimizado para móvil.
-- `PriceTag.tsx`: Formateador según `currency_code`.
-- `Countdown.tsx`: Días restantes hasta `expires_at`.
-
-### `src/components/modals`
-- `SuccessModal.tsx`: Tras crear la ficha: link corto y botón de copiar.
-- `AuthModal.tsx`: Invitación a iniciar sesión vía SSO para editar.
+### Dashboard
+- Mismo header global (logo, Mis Listings, avatar). Contenido: botón "Create new listing ✨", bloque "Compartir mi tienda", lista de listings con métricas (vistas, WhatsApp), acciones Editar / Ver / Duplicar / Eliminar.
 
 ---
 
-## 5. Estrategia de UX (Fricción Cero)
+## 5. Mapa de componentes (React)
 
-1.  **Skeleton states:** Durante el fetch de Supabase, placeholders animados para evitar layout shift.
-2.  **Auto-copy:** Al hacer clic en el link generado, copiar al portapapeles y mostrar toast de confirmación.
-3.  **Lazy loading:** Imágenes cargadas al entrar en viewport.
-4.  **WhatsApp link:** URL generada con `whatsapp_number` y mensaje predefinido, ej.  
-    `https://wa.me/{whatsapp_number}?text=Hola, me interesa tu producto: [title] - [listing_url]`
+### `src/components/ui`
+- **Button.tsx:** Variantes Primary, Secondary, Ghost, WhatsApp, **Magic** (degradado azul–cian y glow).
+- **Input.tsx:** Soporte `card` (tarjeta bento con ring cyan en focus); labels opcionales en mayúsculas pequeñas.
+
+### `src/components/product`
+- **ImageUploader.tsx:** Tarjeta bento, zona principal dashed + miniaturas; textos "Agrega fotos de tu producto" y límites; sin label superior si `showTitle={false}`.
+- **PriceInput.tsx:** Campo numérico + select de moneda (ARS/USD) a la derecha; sin label; estilos focus cyan.
+- **WhatsAppNumberInput.tsx:** Input tel con placeholder "WhatsApp number"; usado con `hideLabel` cuando el padre controla el bloque (placeholder + badge SSO).
+- **PriceTag.tsx**, **ImageCarousel.tsx**, etc.: para ficha pública y listados.
+
+### `src/lib/localeCurrency.ts`
+- Monedas del selector: `getLocaleCurrencies()` → ARS y USD.
+- Moneda por defecto al crear: `getLocaleCurrencyCode()` → `'ARS'`.
+
+---
+
+## 6. Estrategia de UX (Fricción Cero)
+
+1. **Sin doble etiqueta:** Campos con solo placeholder o texto dentro del componente (ej. WhatsApp, precio, título).
+2. **Hero claro:** Mensaje "solo link", pasos 1–2–3 y pill de 30 días/SSO para dar contexto antes de completar.
+3. **Orden del formulario:** Título → Fotos → Precio → Descripción → WhatsApp → Email (si aplica) → Botón.
+4. **Auto-copy / toasts:** Al copiar el link generado, feedback claro.
+5. **WhatsApp:** Link `wa.me/{number}?text=...` desde el número del listing.

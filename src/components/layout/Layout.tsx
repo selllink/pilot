@@ -1,18 +1,15 @@
-import { Outlet, Link, useLocation } from 'react-router-dom'
+import { Outlet, Link } from 'react-router-dom'
 import { useAuth } from '@/hooks/useAuth'
 import { UserMenu } from './UserMenu'
 
 export function Layout() {
   const { user, loading, signOut } = useAuth()
-  const location = useLocation()
-  const isDashboard = location.pathname === '/dashboard'
-  const hideHeaderAvatar = isDashboard && user
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A]">
-      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 shadow-sm backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-lg items-center justify-between px-4">
-          <Link to="/" className="flex items-center gap-2">
+      <header className="sticky top-0 z-10 border-b border-slate-100 bg-white">
+        <div className="mx-auto flex h-14 max-w-lg items-center justify-between gap-4 px-4">
+          <Link to="/" className="flex shrink-0 items-center gap-2">
             <picture>
               <source srcSet="/logo-64.webp" type="image/webp" />
               <img
@@ -26,17 +23,16 @@ export function Layout() {
             <span className="text-lg font-extrabold tracking-tight text-[#0F172A]">LinkVenta</span>
             <span className="text-base font-medium text-slate-400">Express</span>
           </Link>
-          {!loading && !hideHeaderAvatar && (
-            user ? (
-              <UserMenu user={user} onSignOut={signOut} />
-            ) : (
+          {!loading && (
+            <div className="flex shrink-0 items-center gap-3">
               <Link
                 to="/dashboard"
-                className="rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-200"
+                className="rounded-full border border-slate-200/80 bg-white/90 px-3 py-1.5 text-xs font-medium text-slate-500 transition-colors hover:border-slate-200 hover:text-slate-600"
               >
                 Mis Listings
               </Link>
-            )
+              {user && <UserMenu user={user} onSignOut={signOut} />}
+            </div>
           )}
         </div>
       </header>

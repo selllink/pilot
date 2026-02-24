@@ -259,23 +259,8 @@ export function DashboardPage() {
     )
   }
 
-  const avatarUrl = (user.user_metadata?.picture as string) ?? (user.user_metadata?.avatar_url as string)
-
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-xl font-bold text-[#0F172A]">My listings</h1>
-        <div className="flex items-center gap-2 rounded-full border border-slate-100 bg-white px-3 py-1.5 shadow-sm">
-          {avatarUrl ? (
-            <img src={avatarUrl} alt="" className="h-8 w-8 rounded-full object-cover" />
-          ) : (
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-sm font-medium text-slate-600">
-              {user.email?.charAt(0).toUpperCase() ?? '?'}
-            </span>
-          )}
-          <span className="max-w-[140px] truncate text-sm text-slate-600">{user.email}</span>
-        </div>
-      </div>
       <Button type="button" variant="magic" onClick={() => navigate('/')}>
         Create new listing ✨
       </Button>
