@@ -102,10 +102,10 @@ export async function getMyListings(userEmail: string): Promise<Listing[]> {
 
 /** Get or create public slug for a creator email (for "share all my listings" link). Requires auth. */
 export async function getOrCreateCreatorSlug(creatorEmail: string): Promise<string> {
-  const { data, error } = await (supabase as { rpc: (n: string, a: { p_creator_email: string }) => Promise<{ data: string | null; error: { message: string } | null }> }).rpc(
-    'get_or_create_creator_slug',
-    { p_creator_email: creatorEmail }
-  )
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data, error } = await (supabase as any).rpc('get_or_create_creator_slug', {
+    p_creator_email: creatorEmail,
+  })
   if (error) throw new Error(error.message)
   if (data == null || typeof data !== 'string') throw new Error('get_or_create_creator_slug did not return a slug')
   return data
