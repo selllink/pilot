@@ -132,7 +132,7 @@ export function CreatePage() {
 
   return (
     <div className="mx-auto max-w-md">
-      <section className="mb-10 text-center">
+      <section className="mb-5 text-center">
         <h1 className="text-3xl font-extrabold tracking-tight leading-tight text-[#0F172A] sm:text-4xl">
           Tus ventas, a un <br />
           <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
@@ -178,27 +178,25 @@ export function CreatePage() {
       </section>
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          card
+          placeholder="¿Qué vendes?"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
         <ImageUploader
           files={files}
           previewUrls={previewUrls}
           onFilesChange={setFiles}
           showTitle={false}
         />
-        <div className="grid grid-cols-2 gap-4">
-          <PriceInput
-            price={price}
-            currencyCode={currencyCode}
-            onPriceChange={setPrice}
-            onCurrencyChange={setCurrencyCode}
-          />
-          <Input
-            card
-            placeholder="¿Qué vendes?"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        </div>
+        <PriceInput
+          price={price}
+          currencyCode={currencyCode}
+          onPriceChange={setPrice}
+          onCurrencyChange={setCurrencyCode}
+        />
         <Input
           card
           placeholder="Describe tu producto"
