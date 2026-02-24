@@ -5,6 +5,7 @@ import { useAuth } from '@/hooks/useAuth'
 import {
   getMyListings,
   getListingEventCounts,
+  getOrCreateCreatorSlug,
   deleteListing,
   duplicateListing,
 } from '@/lib/listings'
@@ -220,6 +221,12 @@ export function DashboardPage() {
     enabled: !!user?.email,
   })
 
+  const { data: creatorSlug, isLoading: slugLoading } = useQuery({
+    queryKey: ['creator-slug', user?.email],
+    queryFn: () => getOrCreateCreatorSlug(user!.email!),
+    enabled: !!user?.email,
+  })
+
   const listingIds = listings.map((l) => l.id)
   const { data: counts = {} } = useQuery({
     queryKey: ['listing-counts', listingIds.join(',')],
@@ -272,6 +279,54 @@ export function DashboardPage() {
       <Button type="button" variant="magic" onClick={() => navigate('/')}>
         Create new listing ✨
       </Button>
+
+      {creatorSlug && (
+        <div className="rounded-[2rem] border border-slate-100 bg-white p-5 shadow-sm">
+          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-slate-500">
+            Compartir mi tienda
+          </h2>
+          <p className="mb-3 text-slate-600">
+            Link con todas tus publicaciones activas (tiene preview al compartir en WhatsApp, etc.)
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <code className="max-w-full truncate rounded-xl bg-slate-100 px-3 py-2 text-sm text-slate-700">
+              {typeof window !== 'undefined' ? window.location.origin : ''}/s/u/{creatorSlug}
+            </code>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  const url = `${typeof window !== 'undefined' ? window.location.origin : ''}/s/u/${creatorSlug}`
+                  navigator.clipboard.writeText(url)
+                }}
+              >
+                Copiar link
+              </Button>
+              {typeof navigator !== 'undefined' && navigator.share && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => {
+                    const url = `${typeof window !== 'undefined' ? window.location.origin : ''}/s/u/${creatorSlug}`
+                    navigator.share({ title: 'Mi tienda', url }).catch(() => {
+                      navigator.clipboard.writeText(url)
+                    })
+                  }}
+                >
+                  Compartir
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      {slugLoading && !creatorSlug && (
+        <div className="rounded-[2rem] border border-slate-100 bg-white p-5 shadow-sm">
+          <p className="text-sm text-slate-500">Generando link de tu tienda…</p>
+        </div>
+      )}
+
       {isLoading ? (
         <div className="animate-pulse space-y-3">
           {[1, 2].map((i) => (

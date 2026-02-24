@@ -77,11 +77,29 @@ export interface Database {
         }
         Update: never
       }
+      creator_slugs: {
+        Row: {
+          creator_email: string
+          slug: string
+        }
+        Insert: {
+          creator_email: string
+          slug?: string
+        }
+        Update: {
+          creator_email?: string
+          slug?: string
+        }
+      }
     }
     Functions: {
       record_listing_event: {
         Args: { p_listing_id: string; p_event_type: string }
         Returns: void
+      }
+      get_or_create_creator_slug: {
+        Args: { p_creator_email: string }
+        Returns: string
       }
     }
   }
@@ -90,3 +108,4 @@ export interface Database {
 export type ListingRow = Database['public']['Tables']['listings']['Row']
 export type ListingInsert = Database['public']['Tables']['listings']['Insert']
 export type ListingEventRow = Database['public']['Tables']['listing_events']['Row']
+export type CreatorSlugRow = Database['public']['Tables']['creator_slugs']['Row']

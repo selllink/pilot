@@ -5,6 +5,7 @@ import { ViewPage } from './pages/ViewPage'
 import { SuccessPage } from './pages/SuccessPage'
 import { DashboardPage } from './pages/DashboardPage'
 import { EditPage } from './pages/EditPage'
+import { SellerListingsPage } from './pages/SellerListingsPage'
 
 function EditPageWithKey() {
   const location = useLocation()
@@ -19,6 +20,7 @@ function App() {
         <Route path="/create" element={<CreatePage />} />
         <Route path="/create/success" element={<SuccessPage />} />
         <Route path="/v/:shortSlug" element={<ViewPage />} />
+        <Route path="/u/:creatorSlug" element={<SellerListingsPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/dashboard/edit/:id" element={<EditPageWithKey />} />
       </Route>

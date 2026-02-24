@@ -100,6 +100,40 @@ export async function getMyListings(userEmail: string): Promise<Listing[]> {
   return (data ?? []) as Listing[]
 }
 
+/** Get or create public slug for a creator email (for "share all my listings" link). Requires auth. */
+export async function getOrCreateCreatorSlug(creatorEmail: string): Promise<string> {
+  const { data, error } = await (supabase as { rpc: (n: string, a: { p_creator_email: string }) => Promise<{ data: string | null; error: { message: string } | null }> }).rpc(
+    'get_or_create_creator_slug',
+    { p_creator_email: creatorEmail }
+  )
+  if (error) throw new Error(error.message)
+  if (data == null || typeof data !== 'string') throw new Error('get_or_create_creator_slug did not return a slug')
+  return data
+}
+
+/** Resolve creator slug to email (public, for seller page). */
+export async function getCreatorBySlug(slug: string): Promise<{ creator_email: string } | null> {
+  const { data, error } = await supabase
+    .from('creator_slugs')
+    .select('creator_email')
+    .eq('slug', slug)
+    .maybeSingle()
+  if (error) throw new Error(error.message)
+  return data as { creator_email: string } | null
+}
+
+/** All active listings by creator email (for public seller page). */
+export async function getActiveListingsByCreatorEmail(creatorEmail: string): Promise<Listing[]> {
+  const { data, error } = await supabase
+    .from('listings')
+    .select('*')
+    .eq('creator_email', creatorEmail)
+    .gt('expires_at', new Date().toISOString())
+    .order('created_at', { ascending: false })
+  if (error) throw new Error(error.message)
+  return (data ?? []) as Listing[]
+}
+
 /** Publicaciones del mismo vendedor (activas, sin la actual), para "Más de este vendedor". */
 export async function getListingsByCreator(
   creatorEmail: string,

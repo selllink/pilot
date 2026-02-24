@@ -1,5 +1,6 @@
 {
   "rewrites": [
+    { "source": "/s/u/:creatorSlug", "destination": "/api/og-seller-page?creatorSlug=:creatorSlug" },
     { "source": "/s/:slug", "destination": "/api/og-page?slug=:slug" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
